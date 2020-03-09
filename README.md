@@ -4,7 +4,15 @@
 A general purposes discord bot named Lester.
 
 ## Reqirements
-python 3.5 or higher
+#### Download
+ - python 3.5 or higher
+#### Pip install:
+ - discord.py
+ - discord.ext
+ - json
+ - urllib
+ - time
+ - sys
 ## Key Features
 - Join & Leave the channel
 - Play music on demand 
