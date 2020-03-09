@@ -1,4 +1,4 @@
-countries_code = {
+countries_list = {
     "ad": "andorra",
     "ae": "unitedarabemirates",
     "ae": "uae",
