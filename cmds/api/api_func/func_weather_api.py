@@ -1,15 +1,10 @@
-import sys
-
-sys.path.append(".../")
-# change path to root(discord_bot)
-
 from urllib import request
 import json
 
 
-from api.api_keys.py import weather_api_key
-from api.weather_api_settings.py import setting_city, setting_countries_code
-from list_and_dicts.countries_codes import countries_list
+from api_settings_and_keys.api_keys import *
+from weather_api_settings import *
+from countries_codes import *
 
 
 def weather():
@@ -17,6 +12,7 @@ def weather():
 
     json_dict_list = request.urlopen(url)
     dict_list = json.load(json_dict_list)
+    print(dict_list)
     zero_degrees = 273.15
 
     # Reformating
@@ -106,3 +102,6 @@ def weather_city(city, countries):
     print(
         f"""I {dict_list["name"]},{dict_list["sys"]["country"]} är det {dict_list["main"]["temp"]} grader och en {dict_list["wind"]["speed"]}m/s vind i en {dict_list["wind"]["deg"]} riktning, det är också {dict_list["wind"]["all"]}."""
     )
+
+
+weather()

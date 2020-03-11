@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 from auth import token
-
-from discord.ext import commands
+import time
 
 client = commands.Bot(command_prefix="§")
 
@@ -31,7 +30,8 @@ async def on_guild_remove(member):
 
 @client.command()
 async def ping(ctx):
-    await ctx.send(f"Pong! {}")
+    start_time = time.time()
+    await ctx.send(f"Pong!\n{(int((time.time() - start_time)/10000)*10)}")
 
 
 client.run(token)
