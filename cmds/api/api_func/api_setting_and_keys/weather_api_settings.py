@@ -1,2 +1,2 @@
-city = 'tullinge'
-cuntery_code = 'SE'
+setting_city = "tullinge"
+setting_countries_code = "SE"
