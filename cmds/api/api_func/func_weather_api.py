@@ -51,6 +51,3 @@ def weather():
     dict_list["clouds"]["all"] = temporary_cloud_amount
 
     return dict_list
-
-
-print(weather())
