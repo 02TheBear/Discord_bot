@@ -44,22 +44,43 @@ async def send_dm(ctx, member: discord.Member, *, content):
     channel = await member.create_dm()
     await channel.send(content)
 
-@client.command()
-async def help(ctx):
-    await ctx.send(f"Hello I am Lester here is some commands you may need:\n Music Commanads:\n§play, §start, §stop, §queue, §skip\n Weather Commands:\n§weather, §weather city\nTimer and Alarm Commands:\n§timer, §alarm\n Statistic Commands:\n§stats csgo, §stats rs6\n Other Commands:\n§tts, §einar, §help\nThis are some commands that will help you with my key features\nFor more information visit: https://github.com/02TheBear/Discord_bot.py/blob/master/README.md")
+
+# @client.command()
+# async def help(ctx):
+#    await ctx.send(
+#        f"Hello I am Lester here is some commands you may need:\n Music Commanads:\n§play, §start, §stop, §queue, §skip\n Weather Commands:\n§weather, §weather city\nTimer and Alarm Commands:\n§timer, §alarm\n Statistic Commands:\n§stats csgo, §stats rs6\n Other Commands:\n§tts, §einar, §help\nThis are some commands that will help you with my key features\nFor more information visit: https://github.com/02TheBear/Discord_bot.py/blob/master/README.md"
+#    )
+
 
 @client.command()
 async def weather(ctx):
 
     url = f"https://api.openweathermap.org/data/2.5/weather?q={setting_city},{setting_countries_code}&appid={weather_api_key}"
 
-    json_dict_list = request.urlopen(url)
-    dict_list = json.load(json_dict_list)
+    weather_info_dict = request.urlopen(url)
+    weather_info_dict = json.load(weather_info_dict)
     zero_degrees = 273.15
 
     # Reformating
-    dict_list["main"]["temp"] -= zero_degrees
-    dict_list["main"]["temp"] = int(dict_list["main"]["temp"])
+    del weather_info_dict["coord"]
+    del weather_info_dict["base"]
+    del weather_info_dict["main"]["feels_like"]
+    del weather_info_dict["main"]["temp_min"]
+    del weather_info_dict["main"]["temp_max"]
+    del weather_info_dict["main"]["pressure"]
+    del weather_info_dict["visibility"]
+    del weather_info_dict["dt"]
+    del weather_info_dict["sys"]["type"]
+    del weather_info_dict["sys"]["id"]
+    del weather_info_dict["timezone"]
+    del weather_info_dict["id"]
+    del weather_info_dict["cod"]
+
+    weather_info_dict["clouds"] = weather_info_dict["clouds"]["all"]
+    weather_info_dict["weather"] = weather_info_dict["weather"][0]["description"]
+    # temp reformating to celsius 1 decimal
+    weather_info_dict["main"]["temp"] -= zero_degrees
+    weather_info_dict["main"]["temp"] = round(weather_info_dict["main"]["temp"], 1)
 
     wind_dict = {
         "NE": {"min_deg": 23, "max_deg": 68, "direction": "nordöstlig"},
@@ -70,25 +91,29 @@ async def weather(ctx):
         "W": {"min_deg": 248, "max_deg": 293, "direction": "västlig"},
         "NW": {"min_deg": 293, "max_deg": 338, "direction": "nordvästlig"},
     }
-    temporary = "nordlig"
+    temporary_wind = "nordlig"
     for wind_direction in wind_dict:
         if (
-            int(dict_list["wind"]["deg"]) < wind_dict[wind_direction]["min_deg"]
-            and int(dict_list["wind"]["deg"]) < wind_dict[wind_direction]["max_deg"]
+            int(weather_info_dict["wind"]["deg"]) < wind_dict[wind_direction]["min_deg"]
+            and int(weather_info_dict["wind"]["deg"])
+            < wind_dict[wind_direction]["max_deg"]
         ):
-            temporary = wind_dict[wind_direction]["direction"]
+            temporary_wind = wind_dict[wind_direction]["direction"]
 
-    dict_list["wind"]["deg"] = temporary
+    weather_info_dict["wind"]["deg"] = temporary_wind
 
-    if dict_list["clouds"]["all"] < 100:
-        dict_list["wind"]["all"] = "mycket målnigt"
-    elif dict_list["clouds"]["all"] < 75:
-        dict_list["wind"]["all"] = "måtligt målnigt"
-    elif dict_list["clouds"]["all"] < 50:
-        dict_list["wind"]["all"] = "något målnigt"
-    elif dict_list["clouds"]["all"] < 25:
-        dict_list["wind"]["all"] = "lätt målnigt"
-    await ctx.send(dict_list)
+    if weather_info_dict["clouds"] < 100:
+        temporary_cloud = "mycket målnigt"
+    elif weather_info_dict["clouds"] < 75:
+        temporary_cloud = "måtligt målnigt"
+    elif weather_info_dict["clouds"] < 50:
+        temporary_cloud = "något målnigt"
+    elif weather_info_dict["clouds"] < 25:
+        temporary_cloud = "lätt målnigt"
+
+    weather_info_dict["clouds"] = temporary_cloud
+
+    await ctx.send(weather_info_dict)
 
 
 client.run(token)
