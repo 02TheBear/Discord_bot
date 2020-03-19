@@ -13,7 +13,7 @@ from cmds.api.api_func.api_setting_and_keys.weather_api_settings import (
 client = commands.Bot(command_prefix="§")
 client.remove_command("help")
 
-
+#
 @client.event
 async def on_ready():
     print("Ready to go")
@@ -21,29 +21,25 @@ async def on_ready():
 
 @client.event
 async def on_guild_join(member):
-    print(f"hi {member}!")
+    print(f"A person joined a server {member}!")
 
 
 @client.event
 async def on_guild_remove(member):
-    print(f"bye {member}!")
+    print(f"A person left a server {member}!")
 
 
+# ping
 @client.command()
 async def ping(ctx):
     start_time = time.time()
-    await ctx.send(f"Pong!\n{(int((time.time() - start_time)/10000)*10)}")
-
-
-@client.command()
-async def hi(ctx):
-    await ctx.send(f"HI!")
+    await ctx.send(f"Pong!\n{round((time.time() - start_time)/1000, 2)}")
 
 
 @client.command()
 async def send_dm(ctx, member: discord.Member, *, content):
     channel = await member.create_dm()
-    await channel.send(content)
+    await channel.send(f"{content}\nFrom: {ctx.message.author}")
 
 
 # join channel
@@ -61,10 +57,11 @@ async def leave(ctx):
 
 # Help command
 @client.command()
-async def help(ctx):
+async def help(ctx, message):
     await ctx.message.author.send(
-        f"Hello I am Lester here is some commands you may need:\n\n Music Commanads:\n§play <song name/yt-link>, §start , §stop, §queue <song name/yt-link>, §skip\n\nWeather Commands:\n§weather, §weather <city>\n\nTimer and Alarm Commands:\n§timer <time>, §alarm <time>\n Statistic Commands:\n§stats csgo <player/link>, §stats rs6 <player/link>\n\n Other Commands:\n§tts <text>, §einar, §help\n\nThis are some commands that will help you with my key features. For more information visit: https://github.com/02TheBear/Discord_bot.py/blob/master/README.md"
+        f"**Hello {ctx.message.author}!**\nI am Lester, here is some commands you may need:\n\n **Music Commanads:**\n§play <song name/yt-link>, §start , §stop, §queue <song name/yt-link>, §skip\n\n**Weather Commands:**\n§weather, §weather <city>\n\n**Timer and Alarm Commands:**\n§timer <time>, §alarm <time>\n\n **Statistic Commands:**\n§stats csgo <player/link>, §stats rs6 <player/link>\n\n **Other Commands:**\n§tts <text>, §einar, §help\n\nThis are some commands that will help you with my key features. For more information visit: https://github.com/02TheBear/Discord_bot.py/blob/master/README.md"
     )
+    await client.delete_message(message)
 
 
 @client.command()
@@ -81,18 +78,27 @@ async def weather(ctx):
     weather_info_dict["temp"] = weather_info_dict["main"]["temp"]
     weather_info_dict["clouds"] = weather_info_dict["clouds"]["all"]
     weather_info_dict["weather"] = weather_info_dict["weather"][0]["description"]
-    # weather_info_dict["wind_speed"] = weather_info_dict[]
+    weather_info_dict["wind_speed"] = weather_info_dict["wind"]["speed"]
+    weather_info_dict["wind_direction"] = weather_info_dict["wind"]["deg"]
+    weather_info_dict["city"] = weather_info_dict["name"]
 
     # removing unused info
-    del weather_info_dict["coord"]
-    del weather_info_dict["base"]
-    del weather_info_dict["main"]
-    del weather_info_dict["visibility"]
-    del weather_info_dict["dt"]
-    del weather_info_dict["sys"]
-    del weather_info_dict["timezone"]
-    del weather_info_dict["id"]
-    del weather_info_dict["cod"]
+    del_list = (
+        "coord",
+        "base",
+        "main",
+        "wind",
+        "visibility",
+        "dt",
+        "sys",
+        "timezone",
+        "id",
+        "cod",
+        "name",
+    )
+
+    for item in del_list:
+        del weather_info_dict[item]
 
     # temp reformating to celsius 1 decimal
     weather_info_dict["temp"] -= zero_degrees
@@ -110,13 +116,14 @@ async def weather(ctx):
     temporary_wind = "nordlig"
     for wind_direction in wind_dict:
         if (
-            int(weather_info_dict["wind"]["deg"]) < wind_dict[wind_direction]["min_deg"]
-            and int(weather_info_dict["wind"]["deg"])
+            int(weather_info_dict["wind_direction"])
+            < wind_dict[wind_direction]["min_deg"]
+            and int(weather_info_dict["wind_direction"])
             < wind_dict[wind_direction]["max_deg"]
         ):
             temporary_wind = wind_dict[wind_direction]["direction"]
 
-    weather_info_dict["wind"]["deg"] = temporary_wind
+    weather_info_dict["wind_direction"] = temporary_wind
 
     if weather_info_dict["clouds"] < 100:
         temporary_cloud = "mycket målnigt"
