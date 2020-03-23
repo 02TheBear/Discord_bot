@@ -1,22 +1,36 @@
+# Important imports
 import discord
 from discord.ext import commands
-from auth import token
-import time
-from urllib import request
+
+client = commands.Bot(command_prefix="§")
+client.remove_command("help")
+
+# Imports important for commands
+import asyncio
 import json
-from cmds.api.api_func.api_setting_and_keys.api_keys import weather_api_key
+import youtube_dl
+import time
+import urllib
+import random
+
+# Local imports
+# from cmds.core_func.func_join import join
 from cmds.api.api_func.api_setting_and_keys.weather_api_settings import (
     setting_city,
     setting_countries_code,
 )
 
-client = commands.Bot(command_prefix="§")
-client.remove_command("help")
+# Import hidden keys and tokens
+from auth import token
+from cmds.api.api_func.api_setting_and_keys.api_keys import weather_api_key
 
-#
+
 @client.event
 async def on_ready():
-    print("Ready to go")
+    print("Logged in as")
+    print(client.user.name)
+    print(client.user.id)
+    print("------")
 
 
 @client.event
@@ -29,30 +43,39 @@ async def on_guild_remove(member):
     print(f"A person left a server {member}!")
 
 
-# ping
+extensions = ["core"]
+
+
+@client.command()
+async def load(extensions):
+    try:
+        client.load_extensions(extensions)
+        print("Loaded {}".format(extensions))
+    except Exception as error:
+        print("{} cannot be loaded. [{}]".format(extensions, error))
+
+
+@client.command()
+async def unload(extensions):
+    try:
+        client.unload_extensions(extensions)
+        print("Unloaded {}".format(extensions))
+    except Exception as error:
+        print("{} cannot be unloaded. [{}]".format(extensions, error))
+
+
+# Ping
 @client.command()
 async def ping(ctx):
     start_time = time.time()
     await ctx.send(f"Pong!\n{round((time.time() - start_time)/1000, 2)}")
 
 
+# DM command
 @client.command()
 async def send_dm(ctx, member: discord.Member, *, content):
     channel = await member.create_dm()
     await channel.send(f"{content}\nFrom: {ctx.message.author}")
-
-
-# join channel
-@client.command()
-async def join(ctx):
-    if ctx.message.author.voice:
-        await ctx.message.author.voice.channel.connect()
-
-
-# leave channel
-@client.command()
-async def leave(ctx):
-    await ctx.voice_client.disconnect()
 
 
 # Help command
@@ -64,6 +87,24 @@ async def help(ctx, message):
     await client.delete_message(message)
 
 
+# Music play command
+@client.command(pass_context=True)
+async def play(ctx):
+    voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
+    song = ctx.message.content.split(" ")
+    search_song = " ".join(song[1:1])
+    player = await voice.create_ytdl_player(
+        "https://www.youtube.com/watch?v=" + search_song
+    )
+    player.start()
+
+
+# Random number command
+# @client.command()
+# async def random_number(ctx, massage):
+
+
+# Weather check command
 @client.command()
 async def weather(ctx):
 
@@ -82,7 +123,7 @@ async def weather(ctx):
     weather_info_dict["wind_direction"] = weather_info_dict["wind"]["deg"]
     weather_info_dict["city"] = weather_info_dict["name"]
 
-    # removing unused info
+    # Removing unused information
     del_list = (
         "coord",
         "base",
@@ -100,7 +141,7 @@ async def weather(ctx):
     for item in del_list:
         del weather_info_dict[item]
 
-    # temp reformating to celsius 1 decimal
+    # Temp reformating to celsius with one decimal
     weather_info_dict["temp"] -= zero_degrees
     weather_info_dict["temp"] = round(weather_info_dict["temp"], 1)
 
@@ -139,5 +180,10 @@ async def weather(ctx):
     await ctx.send(weather_info_dict)
 
 
-client.run(token)
-
+if __name__ == "__main__":
+    for extension in extensions:
+        try:
+            client.load_extension(extensions)
+        except Exception as error:
+            print(f"{extension} cannot be loaded. [{error}]")
+    client.run(token)
