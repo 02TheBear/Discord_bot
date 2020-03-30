@@ -1,7 +1,7 @@
 # Discord Bot
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A general purposes discord bot named Lester.
+The general purposes of our discord bot, Lester.
 
 ## Reqirements
 #### Download
@@ -67,4 +67,3 @@ A general purposes discord bot named Lester.
     - Sends a personal message to the user you wrote it to
   - **§random_number** ('number')
     - Picks a random number between 0 and the number you wrote
- 
