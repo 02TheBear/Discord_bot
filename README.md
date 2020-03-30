@@ -3,6 +3,8 @@
 
 The general purposes of our discord bot, Lester.
 
+Lester can tell you who joined your server and who left the server and many odther things listed here down blow:
+
 ## Reqirements
 
 #### Download
@@ -15,6 +17,10 @@ The general purposes of our discord bot, Lester.
  - urllib
  - time
  - sys
+ - os
+ - random
+ - youtube_dl
+ - asyncio
 
 
 ## Key Features
@@ -81,3 +87,6 @@ The general purposes of our discord bot, Lester.
     - Sends a personal message to the user you wrote it to
   - **§random_number** ('number')
     - Picks a random number between 0 and the number you wrote
+  - **§ping**
+    - Pong!
+    - Checks the latency of the bot in milliseconds
