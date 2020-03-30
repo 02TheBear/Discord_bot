@@ -3,9 +3,7 @@
 
 The general purposes of our discord bot, Lester.
 
-
 ## Reqirements
-
 
 #### Download
  - python 3.5 or higher
@@ -31,7 +29,6 @@ The general purposes of our discord bot, Lester.
 
 
 ## Commands
-
 
 ### Core commads
   - **§join**
