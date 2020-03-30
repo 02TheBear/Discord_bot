@@ -29,7 +29,7 @@ A general purposes discord bot named Lester.
   - **§leave**
    - The bot leaves your channel
 ### Music
-  - **§play** ('song name/youtube link')
+  - **§play** ('song name/url')
     - Plays a song
   - **§start** 
     - Starts a paused or queued song
@@ -42,7 +42,7 @@ A general purposes discord bot named Lester.
 ### Weather
   - **§weather**
     - Checks the weather in chosen in the settings file
-  - **§weather city** ('city') ('country code')
+  - **§weather_city** ('city') ('country code')
     - Checks the weather in a chosen city
 ### Text to speech
   - **§tts** ('what you want to be read')
@@ -53,13 +53,18 @@ A general purposes discord bot named Lester.
   - **§alarm** ('when you want it to go off')
     - Goes off at the given time
 ### Statistics
-  - **§stats csgo** ('user')
+  - **§stats_csgo** ('user')
     - Counter-Strike: Global offensive statistics
-  - **§stats r6s** ('user/group')
+  - **§stats_r6s** ('user/group')
     - Rainbow six siege statistics
 ### Help
   - **§help**
     - Gives you some information and help whit the discord bot
   - **§einar** ('languages')
     - Helps with a certain programing languages and git
+### Other
+  - **§send_dm** ('user name; the message')
+    - Sends a personal message to the user you wrote it to
+  - **§random_number** ('number')
+    - Picks a random number between 0 and the number you wrote
  
