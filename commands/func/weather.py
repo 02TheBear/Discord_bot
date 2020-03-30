@@ -10,7 +10,6 @@ from settings import (
     setting_countries_code,
     temprature_scale,
 )
-from list_and_dicts.weather_emoji_dict import weather_discriptions_to_emojis
 
 
 class weather(commands.Cog):
@@ -24,13 +23,16 @@ class weather(commands.Cog):
 
         weather_info_dict = request.urlopen(url)
         weather_info_dict = json.load(weather_info_dict)
-        zero_degrees = 273.15
         print(weather_info_dict)
         # Reformating
         weather_info_dict["humidity"] = weather_info_dict["main"]["humidity"]
         weather_info_dict["temp"] = weather_info_dict["main"]["temp"]
         weather_info_dict["clouds"] = weather_info_dict["clouds"]["all"]
-        weather_info_dict["weather"] = weather_info_dict["weather"][0]["description"]
+        weather_info_dict["description_weather"] = weather_info_dict["weather"][0][
+            "description"
+        ]
+        weather_info_dict["weather_icon"] = weather_info_dict["weather"][0]["icon"]
+        weather_info_dict["weather"] = weather_info_dict["weather"][0]["main"]
         weather_info_dict["wind_speed"] = weather_info_dict["wind"]["speed"]
         weather_info_dict["wind_direction"] = weather_info_dict["wind"]["deg"]
         weather_info_dict["city"] = weather_info_dict["name"]
@@ -54,7 +56,16 @@ class weather(commands.Cog):
             del weather_info_dict[item]
 
         # Temp reformating to celsius with one decimal
-        weather_info_dict["temp"] -= zero_degrees
+        if temprature_scale == "C":
+            weather_info_dict["temp"] = -273.15
+        elif temprature_scale == "F":
+            weather_info_dict["temp"] = 1.8 * (weather_info_dict["temp"] - 273.15) + 32
+        elif temprature_scale == "K":
+            pass
+        else:
+            weather_info_dict["temp"] = -273.15
+
+        weather_info_dict["temp"]
         weather_info_dict["temp"] = round(weather_info_dict["temp"], 1)
 
         wind_dict = {
@@ -78,10 +89,11 @@ class weather(commands.Cog):
 
         weather_info_dict["wind_direction"] = temporary_wind
 
-        weather_info_dict["weather"] = weather_discriptions_to_emojis[
-            weather_info_dict["weather"]
-        ]
-        await ctx.send(weather_info_dict)
+        await ctx.send(
+            f"""
+            Weather Report:\nWeather: :{weather_info_dict["weather_icon"]}:\nWind: {weather_info_dict["wind_speed"]}\nWind Direction: {weather_info_dict["wind_direction"]}\nTemprature: {weather_info_dict["temp"]}
+            """
+        )
 
 
 def setup(client):

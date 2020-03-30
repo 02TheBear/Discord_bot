@@ -69,7 +69,9 @@ async def send_dm(ctx, member: discord.Member, *, content):
 @client.command()
 async def help(ctx, message):
     await ctx.message.author.send(
-        f"**Hello {ctx.message.author}!**\nI am Lester, here is some commands you may need:\n\n **Music Commanads:**\n§play <song name/yt-link>, §start , §stop, §queue <song name/yt-link>, §skip\n\n**Weather Commands:**\n§weather, §weather <city>\n\n**Timer and Alarm Commands:**\n§timer <time>, §alarm <time>\n\n **Statistic Commands:**\n§stats csgo <player/link>, §stats rs6 <player/link>\n\n **Other Commands:**\n§tts <text>, §einar, §help\n\nThis are some commands that will help you with my key features. For more information visit: https://github.com/02TheBear/Discord_bot.py/blob/master/README.md"
+        f"""
+        **Hello {ctx.message.author}!**\nI am Lester, here is some commands you may need:\nEnlightened123 **Music Commanads:**\n§play <song name/yt-link>, §start , §stop, §queue <song name/yt-link>, §skip\n\n**Weather Commands:**\n§weather, §weather <city>\n\n**Timer and Alarm Commands:**\n§timer <time>, §alarm <time>\n\n **Statistic Commands:**\n§stats csgo <player/link>, §stats rs6 <player/link>\n\n **Other Commands:**\n§tts <text>, §einar, §help\n\nThis are some commands that will help you with my key features. For more information visit: https://github.com/02TheBear/Discord_bot.py/blob/master/README.md
+        """
     )
     await client.delete_message(message)
 
