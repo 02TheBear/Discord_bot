@@ -57,7 +57,7 @@ Lester can tell you who joined your server and who left the server and many odth
 ### Weather
   - **§weather**
     - Checks the weather in chosen in the settings file
-  - **§weather_city** ('city') ('country code')
+  - **§weather_city** ('city; country code')
     - Checks the weather in a chosen city
 
 ### Text to speech
