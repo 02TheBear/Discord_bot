@@ -39,7 +39,7 @@ async def on_guild_remove(member):
     print(f"A person left a server {member}!")
 
 
-# Extensions
+# extensions
 @client.command()
 async def load(ctx, extension):
     client.load_extension(f"commands.func.{extension}")
@@ -75,7 +75,7 @@ async def play(ctx, url: str):
         return
     await ctx.send("Getting everything ready, playing audio soon")
     print("Someone wants to play music let me get that ready for them...")
-    voice = get(ctx.message.author.voice.channel, guild=ctx.guild)
+    voice = get(client.voice_clients, guild=ctx.guild)
     ydl_opts = {
         "format": "bestaudio/best",
         "postprocessors": [
