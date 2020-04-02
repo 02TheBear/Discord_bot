@@ -90,3 +90,5 @@ Lester can tell you who joined your server and who left the server and many odth
   - **§ping**
     - Pong!
     - Checks the latency of the bot in milliseconds
+
+hello
