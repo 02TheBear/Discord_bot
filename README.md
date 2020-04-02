@@ -9,6 +9,7 @@ Lester can tell you who joined your server and who left the server and many odth
 
 #### Download
  - python 3.5 or higher
+ - ffmpeg git-2020-04-01-afa5e38 or higher
 
 #### Pip install:
  - discord.py
@@ -90,5 +91,3 @@ Lester can tell you who joined your server and who left the server and many odth
   - **§ping**
     - Pong!
     - Checks the latency of the bot in milliseconds
-
-hello
