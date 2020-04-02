@@ -9,6 +9,7 @@ Lester can tell you who joined your server and who left the server and many odth
 
 #### Download
  - python 3.5 or higher
+ - ffmpeg git-2020-04-01-afa5e38 or higher
 
 #### Pip install:
  - discord.py
@@ -57,7 +58,7 @@ Lester can tell you who joined your server and who left the server and many odth
 ### Weather
   - **§weather**
     - Checks the weather in chosen in the settings file
-  - **§weather_city** ('city') ('country code')
+  - **§weather_city** ('city; country code')
     - Checks the weather in a chosen city
 
 ### Text to speech
