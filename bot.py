@@ -29,16 +29,6 @@ async def on_ready():
     print("------")
 
 
-@client.event
-async def on_guild_join(member):
-    print(f"A person joined a server {member}!")
-
-
-@client.event
-async def on_guild_remove(member):
-    print(f"A person left a server {member}!")
-
-
 # extensions
 @client.command()
 async def load(ctx, extension):
@@ -92,7 +82,7 @@ async def play(ctx, url: str):
         if file.endswith(".mp3"):
             os.rename(file, "song.mp3")
     voice.play(discord.FFmpegPCMAudio("song.mp3"))
-    voice.volume = 100
+    voice.volume = 20
     voice.is_playing()
 
 
