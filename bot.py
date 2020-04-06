@@ -10,6 +10,7 @@ import random
 import os
 from discord.utils import get
 from discord import FFmpegPCMAudio
+import validators
 
 # Local imports
 from settings import prefix
@@ -54,6 +55,8 @@ async def ping(ctx):
 # Music play command
 @client.command()
 async def play(ctx, url: str):
+    if ctx.message.author.voice:
+        await ctx.message.author.voice.channel.connect()
     song_there = os.path.isfile("song.mp3")
     try:
         if song_there:
@@ -64,7 +67,6 @@ async def play(ctx, url: str):
         )
         return
     await ctx.send("Getting everything ready, playing audio soon")
-    print("Someone wants to play music let me get that ready for them...")
     voice = get(client.voice_clients, guild=ctx.guild)
     ydl_opts = {
         "format": "bestaudio/best",
@@ -77,6 +79,13 @@ async def play(ctx, url: str):
         ],
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        if validators.url(url):
+            pass
+        else:
+            url = """https://www.youtube.com/watch?v=""" + str(
+                os.system("youtube-dl --id ytsearch:'{url}' ")
+            )
+        print(url)
         ydl.download([url])
     for file in os.listdir("./"):
         if file.endswith(".mp3"):
