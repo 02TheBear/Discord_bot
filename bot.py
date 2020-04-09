@@ -12,6 +12,10 @@ from discord.utils import get
 from discord import FFmpegPCMAudio
 import validators
 
+import urllib.request
+import urllib.parse
+import re
+
 # Local imports
 from settings import prefix
 
@@ -53,46 +57,6 @@ async def ping(ctx):
 
 
 # Music play command
-@client.command()
-async def play(ctx, url: str):
-    if ctx.message.author.voice:
-        await ctx.message.author.voice.channel.connect()
-    song_there = os.path.isfile("song.mp3")
-    try:
-        if song_there:
-            os.remove("song.mp3")
-    except PermissionError:
-        await ctx.send(
-            "Wait for the current playing music end or use the 'stop' command"
-        )
-        return
-    await ctx.send("Getting everything ready, playing audio soon")
-    voice = get(client.voice_clients, guild=ctx.guild)
-    ydl_opts = {
-        "format": "bestaudio/best",
-        "postprocessors": [
-            {
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
-                "preferredquality": "192",
-            }
-        ],
-    }
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        if validators.url(url):
-            pass
-        else:
-            url = """https://www.youtube.com/watch?v=""" + str(
-                os.system("youtube-dl --id ytsearch:'{url}' ")
-            )
-        print(url)
-        ydl.download([url])
-    for file in os.listdir("./"):
-        if file.endswith(".mp3"):
-            os.rename(file, "song.mp3")
-    voice.play(discord.FFmpegPCMAudio("song.mp3"))
-    voice.volume = 20
-    voice.is_playing()
 
 
 if __name__ == "__main__":
