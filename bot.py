@@ -56,8 +56,5 @@ async def ping(ctx):
     await ctx.send(f"Pong!\n{int(client.latency * 1000)}ms")
 
 
-# Music play command
-
-
 if __name__ == "__main__":
     client.run(token)
