@@ -11,7 +11,7 @@ from discord import FFmpegPCMAudio
 import validators
 
 
-class func_play_music(commands.Cog):
+class func_play_music(commands.Cog,):
     def __intit__(self, client):
         self.client = client
 
@@ -31,7 +31,7 @@ class func_play_music(commands.Cog):
             )
             return
         await ctx.send("Getting everything ready, playing audio soon")
-        voice = get(ctx.voice_client, guild=ctx.guild)
+        voice = get(self.client.voice_client, guild=ctx.guild)
         ydl_opts = {
             "format": "bestaudio/best",
             "postprocessors": [
