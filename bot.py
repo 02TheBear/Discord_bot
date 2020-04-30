@@ -11,7 +11,6 @@ import os
 from discord.utils import get
 from discord import FFmpegPCMAudio
 import validators
-*
 import urllib.request
 import urllib.parse
 import re
@@ -55,6 +54,7 @@ for filename in os.listdir("./commands/func"):
 async def ping(ctx):
     start_time = time.time()
     await ctx.send(f"Pong!\n{int(client.latency * 1000)}ms")
+
 
 if __name__ == "__main__":
     client.run(token)
